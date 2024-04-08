@@ -1,0 +1,36 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input
+      type="file"
+      name=""
+      id="fileinp"
+      placeholder="add"
+      accept="image/*"
+      multiple
+    />
+    <img src="" alt="" id="imgBox" style="width: 150px; height: 150px" />
+
+    <script>
+      const inp = document.getElementById("fileinp"); //inp tanitdiq
+      const img = document.getElementById("imgBox"); // img ide gore tanitdiq
+
+      function handleFile(event) { //funksiya yaratdiq
+        let file = event.target.files[0]; //file deyiseni yaradib eventdan gelen target.files 0ci indexsi gotururuk
+        
+        let reader = new FileReader(); //reader deyiseni yaradib FileReader func-a beraber etdik
+
+        reader.onload = function (event) { //reader oxuyucunu ise saldiq
+    
+          img.src = event.target.result; // bu eventdan gelen target.resultu doc-daki img taginin src-sina menimsetdik
+        };
+        reader.readAsDataURL(file); // oxuyucunu cagirdiq (file)
+      }
+      inp.addEventListener("change", handleFile); // funcu tanitdiq
+    </script>
+  </body>
+</html>
