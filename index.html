@@ -7,30 +7,38 @@
   <body>
     <input
       type="file"
-      name=""
       id="fileinp"
-      placeholder="add"
       accept="image/*"
       multiple
     />
-    <img src="" alt="" id="imgBox" style="width: 150px; height: 150px" />
+    <div id="imgContainer" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
 
     <script>
-      const inp = document.getElementById("fileinp"); //inp tanitdiq
-      const img = document.getElementById("imgBox"); // img ide gore tanitdiq
+      const inp = document.getElementById("fileinp"); // Fayl inputunu tanıdırıq
+      const imgContainer = document.getElementById("imgContainer"); // Şəkillərin göstəriləcəyi konteyner
 
-      function handleFile(event) { //funksiya yaratdiq
-        let file = event.target.files[0]; //file deyiseni yaradib eventdan gelen target.files 0ci indexsi gotururuk
+      function handleFiles(event) { // Funksiya şəkillərin seçilməsini idarə edir
+        imgContainer.innerHTML = ""; // Konteyneri təmizləyirik (köhnə şəkilləri silmək üçün)
+
+        const files = event.target.files; // Bütün seçilən faylları alırıq
+        console.log('files', files);
         
-        let reader = new FileReader(); //reader deyiseni yaradib FileReader func-a beraber etdik
+        Array.from(files).forEach((file) => { // Fayllar siyahısını dövrə salırıq
+          const reader = new FileReader(); // FileReader obyekti yaradırıq
 
-        reader.onload = function (event) { //reader oxuyucunu ise saldiq
-    
-          img.src = event.target.result; // bu eventdan gelen target.resultu doc-daki img taginin src-sina menimsetdik
-        };
-        reader.readAsDataURL(file); // oxuyucunu cagirdiq (file)
+          reader.onload = function (event) { // Fayl oxunduqda işə düşən hadisə
+            const img = document.createElement("img"); // Yeni img elementi yaradırıq
+            img.src = event.target.result; // Şəkil URL-sini təyin edirik
+            img.style.width = "150px"; // Enini təyin edirik
+            img.style.height = "150px"; // Hündürlüyünü təyin edirik
+            imgContainer.appendChild(img); // Şəkili konteynerə əlavə edirik
+          };
+          
+          reader.readAsDataURL(file); // Faylı base64 formatında oxuyuruq
+        });
       }
-      inp.addEventListener("change", handleFile); // funcu tanitdiq
+
+      inp.addEventListener("change", handleFiles); // Fayl seçimi dəyişəndə funksiyanı işə salırıq
     </script>
   </body>
 </html>
